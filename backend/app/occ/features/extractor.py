@@ -230,12 +230,13 @@ def _extract_face_payload(
             contour["area"] = w["area"]
         contours.append(contour)
 
-        if is_planar_face and (not is_outer_wire) and contour["contour_type"] in (
+        is_inner_feature_loop = (not is_outer_wire) and contour["contour_type"] in (
             "circle",
             "slot",
             "rectangle",
             "hexagon",
-        ):
+        )
+        if is_inner_feature_loop:
             _contour_to_hole(contour, fid, holes, options, ref_points)
 
         wires_out.append(

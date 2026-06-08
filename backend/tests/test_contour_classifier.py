@@ -29,8 +29,23 @@ def _rect_pts_3d(lx: float, ly: float, z: float = 0.0):
     ]
 
 
-def _slot_pts_3d(length: float, width: float, z: float = 0.0):
-    return _rect_pts_3d(length, width, z)
+def _slot_pts_3d(length: float, width: float, z: float = 0.0, n_arc: int = 16):
+    half_len = length / 2
+    half_w = width / 2
+    radius = half_w
+    straight_half = max(0.0, half_len - radius)
+    pts = []
+
+    for i in range(n_arc + 1):
+        t = -math.pi / 2 + math.pi * i / n_arc
+        pts.append((straight_half + radius * math.cos(t), radius * math.sin(t), z))
+
+    for i in range(1, n_arc + 1):
+        t = math.pi / 2 + math.pi * i / n_arc
+        pts.append((-straight_half + radius * math.cos(t), radius * math.sin(t), z))
+
+    pts.append(pts[0])
+    return pts
 
 
 def test_classify_circle():

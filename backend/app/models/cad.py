@@ -168,6 +168,7 @@ class CadAnalyzeOptions(BaseModel):
             "Disabled by default to avoid treating outer cylinders/fillets as holes."
         ),
     )
+    model_config = {"use_enum_values": True}
 
 
 class CadAnalyzeResult(BaseModel):

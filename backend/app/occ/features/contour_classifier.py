@@ -9,8 +9,9 @@ import numpy as np
 
 # 圆度阈值：越接近 1 越像圆
 _CIRCULARITY_CIRCLE = 0.88
-_CIRCULARITY_SLOT_MAX = 0.82
+_CIRCULARITY_SLOT_MAX = 0.9
 _SLOT_ASPECT_MIN = 1.75
+_SLOT_CIRCULARITY_MIN = 0.72
 _RECT_ASPECT_MAX = 1.6
 _HEX_CORNER_TARGET = 6
 _HEX_CORNER_TOL = 1
@@ -120,17 +121,8 @@ def _analyze_loop_2d(pts2d: np.ndarray) -> dict[str, Any]:
     cx = float(np.mean(pts2d[:, 0]))
     cy = float(np.mean(pts2d[:, 1]))
 
-    # 圆
-    if circularity >= _CIRCULARITY_CIRCLE:
-        diameter = 2.0 * math.sqrt(area / math.pi)
-        return {
-            "contour_type": "circle",
-            "parameters": {"diameter": diameter, "length": None, "width": None, "across_flats": None},
-            "center_2d": (cx, cy),
-        }
-
-    # 槽：细长 + 非圆
-    if aspect >= _SLOT_ASPECT_MIN and circularity <= _CIRCULARITY_SLOT_MAX:
+    # 槽：细长 + 近似跑道形（避免被高圆度提前误判成圆）
+    if aspect >= _SLOT_ASPECT_MIN and _SLOT_CIRCULARITY_MIN <= circularity <= _CIRCULARITY_SLOT_MAX:
         return {
             "contour_type": "slot",
             "parameters": {
@@ -139,6 +131,15 @@ def _analyze_loop_2d(pts2d: np.ndarray) -> dict[str, Any]:
                 "width": width,
                 "across_flats": None,
             },
+            "center_2d": (cx, cy),
+        }
+
+    # 圆
+    if circularity >= _CIRCULARITY_CIRCLE:
+        diameter = 2.0 * math.sqrt(area / math.pi)
+        return {
+            "contour_type": "circle",
+            "parameters": {"diameter": diameter, "length": None, "width": None, "across_flats": None},
             "center_2d": (cx, cy),
         }
 

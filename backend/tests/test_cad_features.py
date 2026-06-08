@@ -166,8 +166,17 @@ class TestFaceFeatureExtraction:
 # ---------------------------------------------------------------------------
 
 
-class TestPlateWithHole:
-  def test_detects_hole(self):
+  def test_nonplanar_face_inner_circle_still_emits_hole(self):
+      result = extract_face_features(
+          make_plate_with_hole_shape(100, 10, 15),
+          CadAnalyzeOptions(),
+          face_id="face_4",
+      )
+      circle_contours = [c for c in result["contours"] if c["contour_type"] == "circle" and not c["is_outer"]]
+      assert len(circle_contours) >= 1
+      assert len(result["holes"]) >= 1
+      assert result["holes"][0]["contour_type"] == "circle"
+
       result = _analyze_shape(make_plate_with_hole_shape(100, 10, 15))
       assert len(result["holes"]) >= 1
       hole = result["holes"][0]
