@@ -1,0 +1,5 @@
+# Optional: pythonOCC for /api/v1/cad/* (feature extraction & toolpaths)
+# Windows: strongly prefer conda-forge:
+#   conda install -c conda-forge pythonocc-core
+# Linux pip (if wheels available for your platform):
+# pythonocc-core>=7.7.0

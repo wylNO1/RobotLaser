@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.env
+uploads/
+outputs/
+*.glb
+# ikfast 编译产物（源码在 app/ikfast/m20ia_35m/）
+app/ikfast/m20ia_35m/lib/*.dll
+app/ikfast/m20ia_35m/lib/*.so
+app/ikfast/m20ia_35m/lib/*.dylib
+.idea/

@@ -1,0 +1,10 @@
+fastapi>=0.115.0
+uvicorn[standard]>=0.32.0
+python-multipart>=0.0.12
+numpy>=1.26.0
+scipy>=1.11.0
+trimesh>=4.5.0
+# cascadio: 仅用于「无 pythonOCC」的环境；occ 环境请勿安装（与 pythonOCC DLL 冲突）
+# cascadio>=0.0.13
+python-dotenv>=1.0.0
+pydantic>=2.0.0
